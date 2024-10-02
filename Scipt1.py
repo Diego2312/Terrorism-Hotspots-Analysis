@@ -45,17 +45,15 @@ plt.show()
 
 #I need to count per country. How many times do we find
 
-df_global_att = df[["iyear", "country_txt"]]
+df_global_att = df[["iyear", "country_txt"]] #Filter df
 
-df_global_att =df_global_att.groupby(["iyear", "country_txt"]).size()
+df_global_att =df_global_att.groupby(["iyear", "country_txt"]).size() #Group by year, then by country and then count the incidents of these groups
 
-#print(df_global_att)
+df_global_att = df_global_att.unstack(fill_value=0) #Pivot the table so the countries become columns
 
-df_global_att = df_global_att.unstack(fill_value=0)
+df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create a df with countries that do not contain only zeroes
 
-df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()]
-
-df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1)
+df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1) #Create new column with the average attacks throughout countries each year
 
 
 
@@ -66,7 +64,7 @@ highest_HDI_countries = ["Switzerland", "Norway", "Iceland", "Hong Kong", "Denma
 lowest_HDI_countries = ["South Sudan", "Chad", "Niger", "Central African Republic", "Burundi", "Mali", "Mozambique", "Burkina Faso", "Yemen", "Guinea"]
 
 
-plt.figure(figsize=(10,8))
+plt.figure(figsize=(10,8)) #graph size
 
 #Plot a line for every country in the list
 for i in highest_gdp_countries:
@@ -75,12 +73,12 @@ for i in highest_gdp_countries:
     else:
         plt.plot(df_global_att_filered.index, df_global_att_filered[i], label= i)
 
-plt.legend()
+plt.legend() #Show line labels
 
 plt.xlabel("Year")
 plt.ylabel("Attacks")
 
-plt.title("Average attacks per country over years", fontweight="bold")
+plt.title("Average attacks per country over years", fontweight="bold") #title
 plt.show()
 
 
