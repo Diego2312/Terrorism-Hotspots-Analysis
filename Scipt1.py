@@ -49,7 +49,11 @@ df_global_att = df[["iyear", "country_txt"]] #Filter df
 
 df_global_att =df_global_att.groupby(["iyear", "country_txt"]).size() #Group by year, then by country and then count the incidents of these groups
 
+print(df_global_att)
+
 df_global_att = df_global_att.unstack(fill_value=0) #Pivot the table so the countries become columns
+
+print(df_global_att["United States"])
 
 df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create a df with countries that do not contain only zeroes
 
@@ -59,17 +63,17 @@ df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1) #Create ne
 
 #Select countries to plot
 highest_gdp_countries = ["United States", "China", "Germany", "Japan", "India", "United Kingdom", "France", "Italy", "Brazil", "Canada", "Average"]
-lowest_gdp_countries = ["Tuvalu", "Nauru", "Kiribati", "Palau", "Micronesia", "Marshall Islands", "Tonga", "Dominica", "Comoros", "São Tomé and Príncipe"]
-highest_HDI_countries = ["Switzerland", "Norway", "Iceland", "Hong Kong", "Denmark", "Sweden", "Ireland", "Germany", "Singapore", "Netherlands"]
-lowest_HDI_countries = ["South Sudan", "Chad", "Niger", "Central African Republic", "Burundi", "Mali", "Mozambique", "Burkina Faso", "Yemen", "Guinea"]
-
+lowest_gdp_countries = ["Tuvalu", "Nauru", "Kiribati", "Palau", "Micronesia", "Marshall Islands", "Tonga", "Dominica", "Comoros", "São Tomé and Príncipe", "Average"]
+highest_HDI_countries = ["Switzerland", "Norway", "Iceland", "Hong Kong", "Denmark", "Sweden", "Ireland", "Germany", "Singapore", "Netherlands", "Average"]
+lowest_HDI_countries = ["South Sudan", "Chad", "Niger", "Central African Republic", "Burundi", "Mali", "Mozambique", "Burkina Faso", "Yemen", "Guinea", "Average"]
+select_countries = ["United States", "China", "Germany", "Japan", "Average"]
 
 plt.figure(figsize=(10,8)) #graph size
 
 #Plot a line for every country in the list
-for i in highest_gdp_countries:
+for i in select_countries:
     if i == "Average":
-        plt.plot(df_global_att_filered.index, df_global_att_filered[i], label=i, linewidth=5, linestyle="--") #Highlight the average line
+        plt.plot(df_global_att_filered.index, df_global_att_filered[i], label=i, linewidth=3, linestyle="--", color= "purple") #Highlight the average line
     else:
         plt.plot(df_global_att_filered.index, df_global_att_filered[i], label= i)
 
