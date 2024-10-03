@@ -10,7 +10,7 @@ pd.set_option('display.max_colwidth', None)
 
 #Read filtered Data set
 
-df = pd.read_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datasets (1)\datasets\Filtered_Data.csv")
+df = pd.read_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datasets1\datasets\Filtered_Data.csv")
 
 
 #Attacks over the years (Global)
@@ -49,16 +49,13 @@ df_global_att = df[["iyear", "country_txt"]] #Filter df
 
 df_global_att =df_global_att.groupby(["iyear", "country_txt"]).size() #Group by year, then by country and then count the incidents of these groups
 
-print(df_global_att)
-
 df_global_att = df_global_att.unstack(fill_value=0) #Pivot the table so the countries become columns
-
-print(df_global_att["United States"])
 
 df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create a df with countries that do not contain only zeroes
 
 df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1) #Create new column with the average attacks throughout countries each year
 
+df_global_att_filered.to_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datasets1\datasets\Global_att_country.csv")
 
 
 #Select countries to plot
