@@ -14,6 +14,9 @@ weapsubtype1_txt - More specific value for most of the Weapon Types
 nkill - The number of total confirmed fatalities for the incident
 nkillus - The number of U.S. citizens who died as a result of the incident
 
+
+Number of attacks per population.
+
 How has the number of terrorist activities changed over the years? Are there certain regions where this trend is different from the global averages?
 
 To calculate the global average attacks over the years i need the count of attacks per year of every country
@@ -27,12 +30,9 @@ Plot the locations of attacks on a map to visualize their regional spread;
 
 
 
-
 Ideas for data:
 
 
-1- Correlation between country gdp and terrorist incidents
+1- Correlation between country gdp and terrorist incidents (Brazil)
 
-2- Correlation between imigration and terrorist incidents
-
-3-
+2- Correlation between imigration and terrorist incidents (USA)
