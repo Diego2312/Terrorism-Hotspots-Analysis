@@ -21,6 +21,7 @@ df_att_yrs = pd.DataFrame(att_yrs).reset_index(drop=False) #Convert to a df and 
 df_att_yrs.rename(columns={"iyear":"Year"}, inplace=True) #Rename column
 df_att_yrs.sort_values(["Year"], ascending=False, inplace=True) #Sort by year
 
+
 #Plot
 
 plt.figure(figsize=(8, 6))
@@ -55,31 +56,41 @@ df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create
 
 df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1) #Create new column with the average attacks throughout countries each year
 
-df_global_att_filered.to_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datasets1\datasets\Global_att_country.csv")
+#df_global_att_filered.to_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datasets1\datasets\Global_att_country.csv")
 
 
-#Select countries to plot
-highest_gdp_countries = ["United States", "China", "Germany", "Japan", "India", "United Kingdom", "France", "Italy", "Brazil", "Canada", "Average"]
-lowest_gdp_countries = ["Tuvalu", "Nauru", "Kiribati", "Palau", "Micronesia", "Marshall Islands", "Tonga", "Dominica", "Comoros", "São Tomé and Príncipe", "Average"]
-highest_HDI_countries = ["Switzerland", "Norway", "Iceland", "Hong Kong", "Denmark", "Sweden", "Ireland", "Germany", "Singapore", "Netherlands", "Average"]
-lowest_HDI_countries = ["South Sudan", "Chad", "Niger", "Central African Republic", "Burundi", "Mali", "Mozambique", "Burkina Faso", "Yemen", "Guinea", "Average"]
-select_countries = ["United States", "China", "Germany", "Japan", "Average"]
+#Find countries with the most attacks
+
+df_global_test = df_global_att_filered.copy()
+df_global_test.loc[len(df_global_att_filered)] = [df_global_att_filered[i].sum() for i in df_global_att_filered.columns] #Create new row with the total incidents per country
+
+most_atts = df_global_test.loc[:, df_global_test.iloc[47] > 6000] # Filter out countries with less than 6000 total attacks
+most_atts_lis = list(most_atts.columns) # 7 countries with the most terrorist attacks
+
+least_atts = df_global_test.loc[:, df_global_test.iloc[47] < 2] #Countries with the least attacks
+
+
+#Plot
 
 plt.figure(figsize=(10,8)) #graph size
 
 #Plot a line for every country in the list
-for i in select_countries:
-    if i == "Average":
-        plt.plot(df_global_att_filered.index, df_global_att_filered[i], label=i, linewidth=3, linestyle="--", color= "purple") #Highlight the average line
-    else:
-        plt.plot(df_global_att_filered.index, df_global_att_filered[i], label= i)
+for i in most_atts_lis:
+    plt.plot(df_global_att_filered.index, df_global_att_filered[i], label= i)
 
+#Plot the average
+
+#plt.plot(df_global_att_filered.index, df_global_att_filered["Average"], label="Global Average", linewidth=2, linestyle="--", color= "red") #Highlight the average line
+
+#Details
 plt.legend() #Show line labels
-
 plt.xlabel("Year")
 plt.ylabel("Attacks")
+plt.xticks(range(1970, 2025, 5))
+plt.title("Countries with the most terrorist attacks since 1970", fontweight="bold") #title
 
-plt.title("Average attacks per country over years", fontweight="bold") #title
+plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Most_attacks.png")
+
 plt.show()
 
 

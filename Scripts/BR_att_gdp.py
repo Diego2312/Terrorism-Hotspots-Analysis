@@ -22,6 +22,6 @@ plt.xlabel("GDP U$D (Billions)")
 plt.ylabel("Attacks")
 plt.text(2e12, 38, f"Correlation coefficient: {round(corr_coef, 2)}", fontsize=12, ha='center', va='center') #Enter text with correlation coefficient
 
-plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Brazil_att_gdp.png")
+#plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Brazil_att_gdp.png")
 
 plt.show

@@ -43,7 +43,7 @@ plt.title("Immigration and terrorist attacks (USA_percentage)") #Title
 plt.text(10, 67, f"Correlation coefficient: {round(correlation_coefficient, 2)}", fontsize=12, ha='center', va='center') #Enter text with correlation coefficient
 plt.grid()
 
-plt.savefig("Immigration_and_terrorist_attacks_(USA_percentage).png")
+#plt.savefig("Immigration_and_terrorist_attacks_(USA_percentage).png")
 
 plt.show()
 
