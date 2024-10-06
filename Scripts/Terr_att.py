@@ -15,11 +15,18 @@ df = pd.read_csv(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\datase
 
 #Attacks over the years (Global)
 
-
 att_yrs = df["iyear"].value_counts() #Create series with count of attacks per year
 df_att_yrs = pd.DataFrame(att_yrs).reset_index(drop=False) #Convert to a df and fix index
 df_att_yrs.rename(columns={"iyear":"Year"}, inplace=True) #Rename column
 df_att_yrs.sort_values(["Year"], ascending=False, inplace=True) #Sort by year
+
+
+#Extrapolate missing data (1993)
+
+df_att_yrs.loc[len(df_att_yrs["Year"])] = [1993, None] #New row with Year missing
+df_att_yrs.sort_values(["Year"], ascending=False,  inplace=True) #Sort values again, now with new row
+df_att_yrs.reset_index(drop=True, inplace=True) #Reset Index
+df_att_yrs.interpolate(degree=2, inplace=True) #Interpolate the data to fill missing 1993 data. In this method a degree 2 polynomial
 
 
 #Plot
@@ -32,7 +39,9 @@ plt.xticks(range(1970, 2020, 5))
 plt.xlabel("Year")
 plt.ylabel("Attacks")
 
-plt.title("Terrorist attacks over the years", fontweight="bold")
+plt.title("Terrorist attacks over the years (Global)", fontweight="bold")
+
+plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Terrorist_att_yrs.png")
 
 plt.show()
 
@@ -40,19 +49,15 @@ plt.show()
 #Average attacks over the years (Global)
 
 
-#Create a new df with the number of attacks per country per year. Column year and one column for each country and one for average
+#Create a new df with the number of attacks per country per year.
 
 #Use groupby year, then by country and then sum
 
-#I need to count per country. How many times do we find
-
 df_global_att = df[["iyear", "country_txt"]] #Filter df
-
 df_global_att =df_global_att.groupby(["iyear", "country_txt"]).size() #Group by year, then by country and then count the incidents of these groups
-
 df_global_att = df_global_att.unstack(fill_value=0) #Pivot the table so the countries become columns
 
-df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create a df with countries that do not contain only zeroes
+df_global_att_filered = df_global_att.loc[:, (df_global_att != 0).any()] #Create a df with countries that do not contain only zeroes (In this case none do)
 
 df_global_att_filered["Average"] = df_global_att_filered.mean(axis=1) #Create new column with the average attacks throughout countries each year
 
@@ -89,9 +94,9 @@ plt.ylabel("Attacks")
 plt.xticks(range(1970, 2025, 5))
 plt.title("Countries with the most terrorist attacks since 1970", fontweight="bold") #title
 
-plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Most_attacks.png")
+#plt.savefig(r"C:\Users\Owner\ACSAI\Extra\Terrorism-Hotspots-Analysis\plots\Most_attacks.png")
 
-plt.show()
+#plt.show()
 
 
 
